@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dinnermenuweb.pages.dev/sitemap.xml
