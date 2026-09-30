@@ -47,3 +47,14 @@ body{font-family:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif
 .hero-lede,.description,.choice strong,.choice small,.recommendation-note,.meal-overlay,.comments-intro{font-family:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif}
 .brand-tagline,.meal-number,footer{font-family:"Space Grotesk","DM Mono",sans-serif}
 @media(max-width:640px){.hero-copy>.eyebrow{margin-bottom:22px;font-size:10px}.hero h1>span{transform:rotate(-1.7deg) translateX(-.025em)}.hero h1>em{transform:rotate(1.3deg) translateX(.14em)}.hero-art span{bottom:22px;left:18px;max-width:calc(100% - 36px);padding:11px 13px;font-size:.62rem}.hero-art span strong{font-size:.88rem;line-height:1.45}}
+
+.meal-actions{display:flex;align-items:stretch;gap:8px}
+.meal-overlay .meal-actions .meal-select{width:auto;min-width:0;min-height:42px;flex:1;padding:9px 12px;font-size:14px}
+.meal-overlay .meal-actions .reaction-button{display:inline-flex;width:56px;min-width:56px;min-height:42px;align-items:center;justify-content:center;gap:4px;padding:6px 7px;border:1px solid #f0e4d6;border-radius:11px;background:#fffdf8;color:#c45f45}
+.meal-overlay .meal-actions .reaction-button[aria-pressed="true"]{border-color:#c45f45;background:#c45f45;color:#fff}
+.meal-card.chosen .meal-overlay .meal-actions .reaction-button:not([aria-pressed="true"]){border-color:#f0e4d6;background:#fffdf8;color:#c45f45}
+.meal-overlay .meal-actions .reaction-button:disabled{opacity:.62}
+.reaction-heart{font-size:19px;line-height:1}
+.reaction-count{font-family:"DM Mono",monospace;font-size:11px;font-weight:700;line-height:1}
+.reaction-note{min-height:1.5em;margin:12px 2px 0;color:var(--muted);font-size:12px;text-align:right}
+@media(max-width:640px){.meal-actions{gap:7px}.meal-overlay .meal-actions .meal-select{min-height:42px;padding:8px 10px;font-size:13px}.meal-overlay .meal-actions .reaction-button{width:54px;min-width:54px}.reaction-note{font-size:11px}}

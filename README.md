@@ -17,7 +17,7 @@ AdSense 스크립트는 긴 편집 가이드(`guide.html`)에만 둡니다. 추�
 
 한식과 한국에서 접하기 쉬운 일식·중식·태국식·베트남 음식·멕시코 음식·양식 등 98종의 메인 메뉴를 17개 추천 음식군으로 구성했습니다. 곁들임이나 반찬 성격의 음식과 재료만 바뀐 비슷한 메뉴는 후보에서 제외했습니다. 술과 함께 즐기기 좋은 구이·찜·전골, 계절 음식과 속이 불편한 날을 위한 죽 메뉴도 포함합니다. 추천 결과는 각 메인 메뉴 사진을 배경으로 한 포토카드로 보여줍니다.
 
-질문과 메뉴 데이터 및 추천 규칙은 `public/recommendations.js`, 화면 동작은 `public/app.js`, 반응형 스타일은 `public/styles.css`에 있습니다. 선택 내용은 서버에 전송하거나 저장하지 않습니다.
+질문과 메뉴 데이터 및 추천 규칙은 `public/recommendations.js`, 화면 동작은 `public/app.js`, 반응형 스타일은 `public/styles.css`에 있습니다. 메뉴 선택 답변은 서버에 보내지 않습니다. 메뉴별 하트 수는 Cloudflare Pages Function(`functions/api/reactions.js`)이 D1에 익명 집계하며, 테이블 생성 SQL은 `migrations/0001_menu_reactions.sql`에 있습니다. 운영 환경에서 D1 데이터베이스를 만든 뒤 Pages 프로젝트의 D1 바인딩 변수 이름을 `REACTIONS_DB`로 설정해야 하트 집계가 활성화됩니다.
 
 공개 주소: https://dinnermenuweb.pages.dev/
 
@@ -29,11 +29,15 @@ python3 -m http.server 8000 --directory public
 
 브라우저에서 `http://localhost:8000`에 접속합니다. Windows에서 `python` 명령을 사용할 수도 있습니다.
 
+위 Python 정적 서버에서는 Pages Function이 실행되지 않으므로 메뉴 하트 수는 사용할 수 없습니다. 하트 API를 확인하려면 Cloudflare Pages Functions와 `REACTIONS_DB` 바인딩이 설정된 Pages 환경이 필요합니다.
+
 ## GitHub → Cloudflare Pages 자동 배포
 
 1. GitHub에 새 저장소를 만들고 이 폴더의 파일을 `main` 브랜치에 올립니다.
 2. Cloudflare 대시보드의 **Workers & Pages → Create application → Pages → Connect to Git**에서 GitHub 저장소를 연결합니다.
 3. Framework preset은 **None**, build command는 `exit 0`, build output directory는 `public`, production branch는 `main`으로 설정합니다.
 4. 첫 배포가 완료되면 제공된 `*.pages.dev` 주소에서 결과를 확인합니다. 이후 `main` 브랜치에 push할 때마다 Cloudflare Pages가 자동으로 다시 배포합니다.
+
+하트 집계에는 Cloudflare D1이 필요합니다. Cloudflare 대시보드에서 D1 데이터베이스를 만든 뒤 Pages 프로젝트의 **Settings → Bindings → Add → D1 database binding**에서 변수 이름 `REACTIONS_DB`로 연결하고, D1 콘솔에서 `migrations/0001_menu_reactions.sql`을 실행한 다음 Pages를 다시 배포합니다.
 
 이미 다른 호스팅으로 공개된 버전과 주소는 별개입니다. 도메인을 옮길 때는 새 배포가 확인된 후 DNS와 공유 링크를 변경하세요.

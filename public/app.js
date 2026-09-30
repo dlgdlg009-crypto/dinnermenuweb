@@ -4,7 +4,75 @@
   const $ = selector => document.querySelector(selector);
   const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   let step = 0, answers = {}, result = null, selected = null, round = 0;
+  const reactionStorageKey = 'dinner-menu-reaction-visitor';
+  let temporaryReactionVisitor = '', reactionRequest = 0;
   const focusHeading = selector => { $(selector).focus({preventScroll:true}); $(selector).scrollIntoView({block:'center',behavior:'auto'}); };
+  function reactionVisitorId(create = false) {
+    const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    try {
+      const stored = localStorage.getItem(reactionStorageKey);
+      if (stored && uuidPattern.test(stored)) return stored;
+    } catch {}
+    if (!create) return temporaryReactionVisitor;
+    if (temporaryReactionVisitor) return temporaryReactionVisitor;
+    if (!window.crypto?.getRandomValues) throw new Error('Secure random IDs are unavailable.');
+    const bytes = window.crypto.getRandomValues(new Uint8Array(16));
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    const hex = Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('');
+    temporaryReactionVisitor = `${hex.slice(0,8)}-${hex.slice(8,12)}-${hex.slice(12,16)}-${hex.slice(16,20)}-${hex.slice(20)}`;
+    try { localStorage.setItem(reactionStorageKey, temporaryReactionVisitor); } catch {}
+    return temporaryReactionVisitor;
+  }
+  function updateReactionButton(button, menuName, count, liked) {
+    button.disabled = false;
+    button.setAttribute('aria-pressed', String(liked));
+    button.setAttribute('aria-label', `${menuName} 좋아요 ${count}${liked ? ', 누르면 취소' : ', 누르면 추가'}`);
+    button.querySelector('.reaction-heart').textContent = liked ? '♥' : '♡';
+    button.querySelector('.reaction-count').textContent = new Intl.NumberFormat('ko-KR').format(count);
+  }
+  async function loadReactions(meals) {
+    const requestId = ++reactionRequest;
+    const status = $('#reactionStatus');
+    try {
+      const params = new URLSearchParams({ menus: JSON.stringify(meals.map(meal => meal.name)) });
+      const visitor = reactionVisitorId();
+      const headers = visitor ? { 'X-Reaction-Visitor': visitor } : {};
+      const response = await fetch(`api/reactions?${params}`, { headers, cache: 'no-store' });
+      if (!response.ok) throw new Error('Reaction counts are unavailable.');
+      const data = await response.json();
+      if (requestId !== reactionRequest) return;
+      document.querySelectorAll('#cards [data-reaction]').forEach(button => {
+        const name = button.dataset.reaction;
+        updateReactionButton(button, name, Number(data.counts?.[name]) || 0, data.liked?.includes(name) || false);
+      });
+      status.textContent = '하트는 메뉴별 선호 반응으로 집계돼요.';
+    } catch {
+      if (requestId !== reactionRequest) return;
+      status.textContent = '하트 반응을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.';
+    }
+  }
+  async function toggleReaction(button) {
+    if (button.disabled) return;
+    const menuName = button.dataset.reaction;
+    const visitor = reactionVisitorId(true);
+    const liked = button.getAttribute('aria-pressed') !== 'true';
+    button.disabled = true;
+    try {
+      const response = await fetch('api/reactions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Reaction-Visitor': visitor },
+        body: JSON.stringify({ menu: menuName, visitor, liked })
+      });
+      if (!response.ok) throw new Error('Reaction could not be saved.');
+      const data = await response.json();
+      updateReactionButton(button, menuName, Number(data.count) || 0, Boolean(data.liked));
+      $('#reactionStatus').textContent = '하트는 메뉴별 선호 반응으로 집계돼요.';
+    } catch {
+      button.disabled = false;
+      $('#reactionStatus').textContent = '하트 반응을 저장하지 못했어요. 잠시 후 다시 시도해 주세요.';
+    }
+  }
   function drawSteps() {
     $('#steps').innerHTML = questions.map((q,i) => `<li><button type="button" class="step ${answers[q.key]?'done':''}" data-step="${i}" ${i===step?'aria-current="step"':''} ${i>step&&!answers[questions[i-1].key]?'disabled':''}><span aria-hidden="true">${answers[q.key]?'✓':i+1}</span>${q.short}</button></li>`).join('');
   }
@@ -52,14 +120,18 @@
     $('#reason').textContent = result.reason; $('#moodReason').textContent = result.moodReason;
     $('#cards').innerHTML = result.meals.map((meal,i) => {
       const photoAttrs = meal.photo
-        ? `role="img" aria-label="${escape(meal.name)} 사진" style="--food-image:url('food-atlas-${String(meal.photo.sheet).padStart(2,'0')}.jpg');--food-position:${meal.photo.x}% ${meal.photo.y}%"`
+        ? `style="--food-image:url('food-atlas-${String(meal.photo.sheet).padStart(2,'0')}.jpg');--food-position:${meal.photo.x}% ${meal.photo.y}%"`
         : '';
-      return `<article class="meal-card" data-id="${meal.id}"><div class="meal-photo" ${photoAttrs}><div class="meal-overlay"><span class="meal-number">추천 0${i+1}${i===0?' · 먼저 추천':''}</span><h3>${escape(meal.name)}</h3><p>${escape(meal.description)}</p><button class="quiet" type="button" data-meal="${meal.id}" aria-pressed="false" aria-label="${escape(meal.name)} 선택">이 메뉴로 할래요</button></div></div></article>`;
+      return `<article class="meal-card" data-id="${meal.id}"><div class="meal-photo" ${photoAttrs}><div class="meal-overlay"><span class="meal-number">추천 0${i+1}${i===0?' · 먼저 추천':''}</span><h3>${escape(meal.name)}</h3><p>${escape(meal.description)}</p><div class="meal-actions"><button class="quiet meal-select" type="button" data-meal="${meal.id}" aria-pressed="false" aria-label="${escape(meal.name)} 선택">이 메뉴로 할래요</button><button class="reaction-button" type="button" data-reaction="${escape(meal.name)}" aria-pressed="false" aria-label="${escape(meal.name)} 좋아요" disabled><span class="reaction-heart" aria-hidden="true">♡</span><span class="reaction-count">…</span></button></div></div></div></article>`;
     }).join('');
+    $('#reactionStatus').textContent = '하트 반응을 불러오는 중이에요.';
+    loadReactions(result.meals);
     $('#live').textContent = '선택에 맞는 같은 음식군의 메뉴 세 가지를 추천했어요.';
     focusHeading('#resultTitle');
   }
   $('#cards').addEventListener('click', event => {
+    const reactionButton = event.target.closest('button[data-reaction]');
+    if (reactionButton) { toggleReaction(reactionButton); return; }
     const button = event.target.closest('button[data-meal]');
     if(!button || !result) return;
     selected = result.meals.find(meal => meal.id===button.dataset.meal);
@@ -67,7 +139,7 @@
     document.querySelectorAll('.meal-card').forEach(card => {
       const chosen = card.dataset.id===selected.id;
       card.classList.toggle('chosen',chosen);
-      const control = card.querySelector('button');
+      const control = card.querySelector('button[data-meal]');
       control.setAttribute('aria-pressed',String(chosen)); control.textContent = chosen?'오늘 저녁으로 선택했어요 ✓':'이 메뉴로 할래요';
     });
     $('#final').hidden = false;

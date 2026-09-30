@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#173fb7">
+  <meta name="theme-color" content="#f7efe4">
   <meta name="description" content="계절부터 오늘 기분까지, 네 가지 선택으로 나에게 맞는 저녁 메뉴 세 개를 찾아보세요.">
   <meta property="og:title" content="오늘 저녁 뭐 먹지?">
   <meta property="og:description" content="네 번 고르면, 오늘의 저녁 후보는 딱 세 개.">
   <meta name="google-adsense-account" content="ca-pub-8132579892942373">
   <link rel="canonical" href="https://dinnermenuweb.pages.dev/">
   <title>오늘 저녁 뭐 먹지? | 나에게 맞는 저녁 찾기</title>
-  <link rel="icon" href="favicon.png?v=4" type="image/png">
+  <link rel="icon" href="favicon.png?v=7" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -18,6 +18,14 @@
   <link rel="stylesheet" href="content.css">
   <script src="recommendations.js" defer></script>
   <script src="app.js" defer></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1N9RBMLHLY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1N9RBMLHLY');
+  </script>
 </head>
 <body>
   <header class="top"><div class="wrap">
@@ -38,6 +46,7 @@
       <div class="recommendation-note"><h3 id="familyTitle"></h3><p id="reason"></p><p id="moodReason"></p></div>
       <p class="choose-hint">같은 취향, 조금씩 다른 세 가지. 가장 끌리는 메뉴를 골라주세요.</p>
       <div id="cards" class="meal-grid"></div>
+      <p id="reactionStatus" class="reaction-note" role="status" aria-live="polite">하트는 메뉴별 선호 반응으로 집계돼요.</p>
       <button id="more" class="quiet restart" type="button">같은 취향의 다른 메뉴 3개</button>
       <section id="final" class="final-panel" hidden aria-labelledby="finalTitle"><p class="eyebrow">DINNER DECIDED</p><h2 id="finalTitle" tabindex="-1"></h2><p id="finalDescription"></p><div id="finalTips"></div><div class="final-actions"><button id="copy" class="primary" type="button">메뉴 복사하기</button><button id="share" class="quiet" type="button">친구에게 공유하기</button><button id="reselect" class="quiet" type="button">다른 후보 고르기</button></div></section>
       <p class="footnote">98종 메인 메뉴를 각각 음식 사진이 담긴 포토카드로 보여드려요.</p>
