@@ -59,3 +59,21 @@ body{font-family:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif
 .reaction-note{min-height:1.5em;margin:12px 2px 0;color:var(--muted);font-size:12px;text-align:right}
 @media(max-width:640px){.meal-actions{gap:7px}.meal-overlay .meal-actions .meal-select{min-height:42px;padding:8px 10px;font-size:13px}.meal-overlay .meal-actions .reaction-button{width:54px;min-width:54px}.reaction-note{font-size:11px}}
 
+/* Give the intro and choices screen-like snap points without trapping the rest of the page. */
+.top{display:flex;min-height:100svh;align-items:center}
+.top>.wrap{width:100%}
+@media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth}}
+
+/* Snap the intro and the choice panel into a calm, page-like rhythm. */
+@media (min-width: 641px) {
+  html { scroll-snap-type: y proximity; scroll-padding-top: 0; }
+  .top, #quiz { scroll-snap-align: start; }
+  #quiz { min-height: 100svh; }
+}
+@media (max-width: 640px) {
+  html { scroll-snap-type: y proximity; scroll-padding-top: 0; }
+  .top, #quiz { scroll-snap-align: start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-snap-type: none; }
+}
