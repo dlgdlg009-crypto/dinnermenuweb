@@ -77,3 +77,12 @@ body{font-family:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif
 @media (prefers-reduced-motion: reduce) {
   html { scroll-snap-type: none; }
 }
+
+/* Keep the opening composition compact on tall displays without crowding content. */
+.top{min-height:min(82svh,780px)}
+.top>.wrap{width:min(1180px,calc(100% - 48px))}
+.hero{padding:26px 0 48px}
+.panel{padding:26px}
+@media(min-width:641px){#quiz{min-height:min(84svh,780px)}}
+@media(max-width:880px){.top{min-height:auto;align-items:stretch}.top>.wrap{width:calc(100% - 32px)}.hero{padding:26px 0 34px;gap:26px}}
+@media(max-width:640px){.hero{padding:26px 0 30px;gap:20px}.panel{padding:19px 15px}}
