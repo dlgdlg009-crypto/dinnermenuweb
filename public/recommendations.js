@@ -702,7 +702,7 @@ const families = [
     "id": "cool-spicy",
     "climate": "hot",
     "taste": "spicy",
-    "title": "새콤매콤한 비빔면·롤초밥",
+    "title": "시원하고 매콤한 메뉴와 볶음 요리",
     "emoji": "🍜",
     "light": [
       [
@@ -710,18 +710,6 @@ const families = [
         "소면, 채소, 매콤새콤한 양념",
         20,
         "면과 채소를 매콤새콤한 양념에 비벼 먹어요."
-      ],
-      [
-        "초밥",
-        "초밥밥, 생선회와 해산물",
-        20,
-        "새콤한 초밥밥에 생선이나 해산물을 올려요."
-      ],
-      [
-        "비빔밥",
-        "밥, 나물, 달걀, 고추장",
-        20,
-        "나물과 고명을 고추장에 비벼 먹어요."
       ],
       [
         "물회",
@@ -732,28 +720,10 @@ const families = [
     ],
     "hearty": [
       [
-        "냉면",
-        "냉면, 차가운 육수 또는 양념, 오이",
-        20,
-        "시원한 육수나 양념에 쫄깃한 면을 즐겨요."
-      ],
-      [
         "비빔국수",
         "소면, 채소, 매콤새콤한 양념",
         20,
         "면과 채소를 매콤새콤한 양념에 비벼 먹어요."
-      ],
-      [
-        "초밥",
-        "초밥밥, 생선회와 해산물",
-        20,
-        "새콤한 초밥밥에 생선이나 해산물을 올려요."
-      ],
-      [
-        "비빔밥",
-        "밥, 나물, 달걀, 고추장",
-        20,
-        "나물과 고명을 고추장에 비벼 먹어요."
       ],
       [
         "물회",
@@ -3147,7 +3117,7 @@ const photos = {
   // Atlas 12 repeats the previous sheet's cold-dish row at the top; its new dishes start one row lower.
   "메밀국수": {"sheet": 12, "x": 0, "y": 33.333333333333336},
   "월남쌈": {"sheet": 12, "x": 33.333333333333336, "y": 33.333333333333336},
-  "닭갈비": {"sheet": 12, "x": 66.66666666666667, "y": 33.333333333333336},
+  "닭갈비": {"src": "images/dakgalbi.png"},
   "낙지볶음": {"sheet": 12, "x": 100, "y": 33.333333333333336},
   "타코": {"sheet": 12, "x": 0, "y": 66.66666666666667},
   "커리": {"sheet": 12, "x": 33.333333333333336, "y": 66.66666666666667},
@@ -3194,7 +3164,7 @@ const photos = {
       reason = answers.season==='summer' && rainyTaste==='clean' ? '비 오는 여름날엔 시원하고 담백한 면·초밥을 추천해요.' : rainyTaste === 'clean' ? '비 오는 날이지만 담백한 맛을 골라, 전 대신 따뜻한 면 요리를 추천해요.' : '비 오는 날 생각나는 전·부침개를 골랐어요.';
     } else if (answers.weather === 'hot') {
       familyId = 'cool-' + taste;
-      reason = taste === 'spicy' ? '더운 날에도 매콤하게 즐길 수 있는 비빔면·롤초밥을 골랐어요.' : taste === 'clean' ? '더운 날이라 시원한 면이나 초밥처럼 산뜻한 메뉴를 골랐어요.' : '더운 날 즐기기 좋은 고소한 면 요리와 포케를 골랐어요.';
+      reason = taste === 'spicy' ? '더운 날에도 매콤하게 즐길 수 있는 비빔국수·물회와 볶음 메뉴를 골랐어요.' : taste === 'clean' ? '더운 날이라 시원한 면이나 초밥처럼 산뜻한 메뉴를 골랐어요.' : '더운 날 즐기기 좋은 고소한 면 요리와 포케를 골랐어요.';
     } else if (answers.weather === 'cold') {
       const coldTaste = answers.taste === 'any' ? (answers.mood === 'comfort' ? 'clean' : answers.mood === 'stressed' ? 'spicy' : 'rich') : taste;
       familyId = 'warm-' + coldTaste;
@@ -3225,12 +3195,16 @@ const photos = {
     const seasonalFamily = families.find(f=>f.id==='season-'+answers.season);
     const seasonalNames = new Set([...seasonalFamily.hearty,...seasonalFamily.light].map(row=>row[0]));
     const summerHotSoups = new Set(['순대국밥','곰탕','설렁탕','돼지국밥','닭곰탕','감자탕','굴국밥','황태국밥','육개장','부대찌개','김치찌개','동태탕','뼈해장국','만둣국','칼국수','청국장','곱창전골','콩비지찌개','순두부찌개','애호박 고추장찌개','회&매운탕','꽃게탕','마라탕','짬뽕','낙곱새','수제비','잔치국수','라멘','새우튀김우동','쌀국수']);
-    const baseRows = [...new Map([...family.hearty,...family.light].map(row=>[row[0],row])).values()];
+    const spicyMeals = new Set(['김치찌개','육개장','부대찌개','뼈해장국','동태탕','닭볶음탕','김치찜','낙곱새','마라탕','감자탕','아귀찜','해물찜','회&매운탕','순대볶음','오리주물럭','꽃게탕','순두부찌개','애호박 고추장찌개','비빔국수','물회','제육덮밥','닭갈비','낙지볶음','마파두부','생선조림','짬뽕','깐풍기','무뼈닭발','매운 떡볶이','불닭볶음']);
+    const sourceFamilies = familyId === 'cool-spicy'
+      ? [family, families.find(f=>f.id==='rice-spicy')]
+      : [family];
+    const baseRows = [...new Map(sourceFamilies.flatMap(f=>[...f.hearty,...f.light]).map(row=>[row[0],row])).values()];
     const moodFamilyId = {stressed:'mood-spicy',down:'warm-rich',tired:'rice-clean',celebrate:'rice-rich',comfort:'warm-clean'}[answers.mood];
     const moodFamily = families.find(f=>f.id===moodFamilyId);
     const moodNames = new Set(moodFamily ? [...moodFamily.hearty,...moodFamily.light].map(row=>row[0]) : []);
     const candidateRows = [...new Map(baseRows.map(row=>[row[0],row])).values()]
-      .filter(row=>!(answers.season==='summer' && summerHotSoups.has(row[0])));
+      .filter(row=>!(answers.season==='summer' && summerHotSoups.has(row[0])) && (taste!=='spicy' || spicyMeals.has(row[0])));
     const ranked = candidateRows.map((row,index)=>({
       id:family.id+'-'+index, family:family.id,
       name:row[0],ingredients:row[1],minutes:row[2],description:row[3],photo:photos[row[0]],
@@ -3254,3 +3228,4 @@ const photos = {
   if(typeof module!=='undefined'&&module.exports) module.exports=api;
   else window.DinnerRecommendations=api;
 })();
+

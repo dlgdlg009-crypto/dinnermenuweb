@@ -5,6 +5,7 @@
   const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   let step = 0, answers = {}, result = null, selected = null, round = 0;
   const reactionStorageKey = 'dinner-menu-reaction-visitor';
+  const localReactionStorageKey = 'dinner-menu-local-reactions';
   let temporaryReactionVisitor = '', reactionRequest = 0;
   const focusHeading = selector => { $(selector).focus({preventScroll:true}); $(selector).scrollIntoView({block:'center',behavior:'auto'}); };
   function reactionVisitorId(create = false) {
@@ -31,6 +32,26 @@
     button.querySelector('.reaction-heart').textContent = liked ? '♥' : '♡';
     button.querySelector('.reaction-count').textContent = new Intl.NumberFormat('ko-KR').format(count);
   }
+  function localReactions() {
+    try {
+      const value = JSON.parse(localStorage.getItem(localReactionStorageKey) || '{}');
+      return value && typeof value === 'object' && !Array.isArray(value) ? value : {};
+    } catch { return {}; }
+  }
+  function applyLocalReactions() {
+    const likedMenus = localReactions();
+    document.querySelectorAll('#cards [data-reaction]').forEach(button => {
+      const name = button.dataset.reaction;
+      updateReactionButton(button, name, likedMenus[name] ? 1 : 0, Boolean(likedMenus[name]));
+    });
+  }
+  function saveLocalReaction(menuName, liked) {
+    const reactions = localReactions();
+    if (liked) reactions[menuName] = true;
+    else delete reactions[menuName];
+    try { localStorage.setItem(localReactionStorageKey, JSON.stringify(reactions)); } catch {}
+    return liked ? 1 : 0;
+  }
   async function loadReactions(meals) {
     const requestId = ++reactionRequest;
     const status = $('#reactionStatus');
@@ -49,16 +70,17 @@
       status.textContent = '하트는 메뉴별 선호 반응으로 집계돼요.';
     } catch {
       if (requestId !== reactionRequest) return;
-      status.textContent = '하트 반응을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.';
+      applyLocalReactions();
+      status.textContent = '공용 집계 서버에 연결되지 않아 이 브라우저에서 누른 하트만 표시돼요.';
     }
   }
   async function toggleReaction(button) {
     if (button.disabled) return;
     const menuName = button.dataset.reaction;
-    const visitor = reactionVisitorId(true);
     const liked = button.getAttribute('aria-pressed') !== 'true';
     button.disabled = true;
     try {
+      const visitor = reactionVisitorId(true);
       const response = await fetch('api/reactions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-Reaction-Visitor': visitor },
@@ -69,8 +91,8 @@
       updateReactionButton(button, menuName, Number(data.count) || 0, Boolean(data.liked));
       $('#reactionStatus').textContent = '하트는 메뉴별 선호 반응으로 집계돼요.';
     } catch {
-      button.disabled = false;
-      $('#reactionStatus').textContent = '하트 반응을 저장하지 못했어요. 잠시 후 다시 시도해 주세요.';
+      updateReactionButton(button, menuName, saveLocalReaction(menuName, liked), liked);
+      $('#reactionStatus').textContent = '공용 집계 서버에 연결되지 않아 이 브라우저에서만 하트가 저장돼요.';
     }
   }
   function drawSteps() {
@@ -88,6 +110,7 @@
     $('#next').textContent = step===questions.length-1 ? '추천 메뉴 3개 보기' : '다음으로 →';
     updateSelection();
     if(focus) focusHeading('#questionTitle');
+    else $('#live').textContent = `STEP ${step+1} / ${questions.length}: ${q.title}`;
   }
   function updateSelection() {
     $('#next').disabled = !answers[questions[step].key];
@@ -99,15 +122,15 @@
     result = null; selected = null; round = 0;
     drawSteps(); updateSelection();
   });
-  $('#back').addEventListener('click', () => { if(step>0){step--;drawQuestion();} });
+  $('#back').addEventListener('click', () => { if(step>0){step--;drawQuestion(false);} });
   $('#next').addEventListener('click', () => {
     if(!answers[questions[step].key]) return;
-    if(step<questions.length-1){step++;drawQuestion();} else showResults();
+    if(step<questions.length-1){step++;drawQuestion(false);} else showResults();
   });
   $('#steps').addEventListener('click', event => {
     const button = event.target.closest('button[data-step]');
     if(!button || button.disabled) return;
-    step = Number(button.dataset.step); drawQuestion();
+    step = Number(button.dataset.step); drawQuestion(false);
   });
   function showResults() {
     result = recommend(answers, round); selected = null;
@@ -116,13 +139,15 @@
       const option = q.options.find(o => o[0]===answers[q.key]);
       return `<span>${option[1]} ${escape(option[2])}</span>`;
     }).join('');
-    $('#familyTitle').textContent = result.family.title;
+    $('#familyTitle').textContent = result.meals.map(meal => meal.name).join(' · ');
     $('#reason').textContent = result.reason; $('#moodReason').textContent = result.moodReason;
     $('#cards').innerHTML = result.meals.map((meal,i) => {
-      const photoAttrs = meal.photo
+      const photoAttrs = meal.photo?.src
+        ? `style="--food-image:url('${meal.photo.src}');--food-size:100% 100%"`
+        : meal.photo
         ? `style="--food-image:url('food-atlas-${String(meal.photo.sheet).padStart(2,'0')}.jpg');--food-position:${meal.photo.x}% ${meal.photo.y}%"`
         : '';
-      return `<article class="meal-card" data-id="${meal.id}"><div class="meal-photo" ${photoAttrs}><div class="meal-overlay"><span class="meal-number">추천 0${i+1}${i===0?' · 먼저 추천':''}</span><h3>${escape(meal.name)}</h3><p>${escape(meal.description)}</p><div class="meal-actions"><button class="quiet meal-select" type="button" data-meal="${meal.id}" aria-pressed="false" aria-label="${escape(meal.name)} 선택">이 메뉴로 할래요</button><button class="reaction-button" type="button" data-reaction="${escape(meal.name)}" aria-pressed="false" aria-label="${escape(meal.name)} 좋아요" disabled><span class="reaction-heart" aria-hidden="true">♡</span><span class="reaction-count">…</span></button></div></div></div></article>`;
+      return `<article class="meal-card" data-id="${meal.id}"><div class="meal-photo" ${photoAttrs}><div class="meal-overlay"><span class="meal-number">추천 0${i+1}${i===0?' · 먼저 추천':''}</span><h3>${escape(meal.name)}</h3><p>${escape(meal.description)}</p><div class="meal-actions"><button class="quiet meal-select" type="button" data-meal="${meal.id}" aria-pressed="false" aria-label="${escape(meal.name)} 선택">이 메뉴로 할래요</button><button class="reaction-button" type="button" data-reaction="${escape(meal.name)}" aria-pressed="false" aria-label="${escape(meal.name)} 좋아요"><span class="reaction-heart" aria-hidden="true">♡</span><span class="reaction-count">0</span></button></div></div></div></article>`;
     }).join('');
     $('#reactionStatus').textContent = '하트 반응을 불러오는 중이에요.';
     loadReactions(result.meals);
@@ -225,3 +250,4 @@
   });
   drawQuestion(false);
 })();
+
