@@ -5,7 +5,10 @@
   const list = document.getElementById('commentList');
   const status = document.getElementById('commentStatus');
   const length = document.getElementById('commentLength');
+  const count = document.getElementById('commentCount');
+  const panel = document.querySelector('.comments-aside');
   if (!form || !textarea || !list || !status) return;
+  if (panel && window.matchMedia('(max-width: 640px)').matches) panel.open = false;
 
   const visitorKey = 'dinner-menu-comment-visitor';
   function getVisitorId() {
@@ -50,8 +53,10 @@
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || '댓글을 불러오지 못했어요.');
       renderComments(data.comments || []);
-      status.textContent = data.comments?.length ? `최근 댓글 ${data.comments.length}개` : '아직 댓글이 없어요. 첫 한마디를 남겨주세요.';
+      if (count) count.textContent = `댓글 ${Number(data.totalComments) || 0}개`;
+      status.textContent = data.comments?.length ? `최근 댓글 ${data.comments.length}개를 보여드려요.` : '아직 댓글이 없어요. 첫 한마디를 남겨주세요.';
     } catch {
+      if (count) count.textContent = '집계 준비 중';
       status.textContent = '댓글 저장소가 준비되지 않았어요. 잠시 후 다시 확인해 주세요.';
     }
   }
@@ -102,3 +107,4 @@
 
   loadComments();
 })();
+
