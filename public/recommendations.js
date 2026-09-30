@@ -3117,7 +3117,7 @@ const photos = {
   // Atlas 12 repeats the previous sheet's cold-dish row at the top; its new dishes start one row lower.
   "메밀국수": {"sheet": 12, "x": 0, "y": 33.333333333333336},
   "월남쌈": {"sheet": 12, "x": 33.333333333333336, "y": 33.333333333333336},
-  "닭갈비": {"src": "images/dakgalbi.png"},
+  "닭갈비": {"src": "images/dakgalbi.webp"},
   "낙지볶음": {"sheet": 12, "x": 100, "y": 33.333333333333336},
   "타코": {"sheet": 12, "x": 0, "y": 66.66666666666667},
   "커리": {"sheet": 12, "x": 33.333333333333336, "y": 66.66666666666667},

@@ -3,17 +3,61 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index,follow,max-image-preview:large">
   <meta name="theme-color" content="#f7efe4">
-  <meta name="description" content="계절부터 오늘 기분까지, 네 가지 선택으로 나에게 맞는 저녁 메뉴 세 개를 찾아보세요.">
-  <meta property="og:title" content="오늘 저녁 뭐 먹지?">
-  <meta property="og:description" content="네 번 고르면, 오늘의 저녁 후보는 딱 세 개.">
+  <meta name="description" content="저녁 메뉴 추천이 고민될 때 계절, 체감 날씨, 당기는 맛, 오늘 기분을 골라보세요. 메뉴별 특징을 비교해 지금 어울리는 저녁 메뉴 세 가지와 대표 재료를 추천합니다.">
   <meta name="google-adsense-account" content="ca-pub-8132579892942373">
   <link rel="canonical" href="https://dinnermenuweb.pages.dev/">
-  <title>오늘 저녁 뭐 먹지? | 나에게 맞는 저녁 찾기</title>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="오늘 저녁 뭐 먹지?">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:title" content="오늘 저녁 뭐 먹지? | 계절·날씨별 저녁 메뉴 추천">
+  <meta property="og:description" content="저녁 메뉴 추천이 고민될 때 계절, 체감 날씨, 당기는 맛, 오늘 기분을 골라보세요. 메뉴별 특징을 비교해 지금 어울리는 저녁 메뉴 세 가지와 대표 재료를 추천합니다.">
+  <meta property="og:url" content="https://dinnermenuweb.pages.dev/">
+  <meta property="og:image" content="https://dinnermenuweb.pages.dev/dinner.jpg">
+  <meta property="og:image:alt" content="달걀 프라이를 올린 김치볶음밥 저녁 한 끼">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1254">
+  <meta property="og:image:height" content="1254">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="오늘 저녁 뭐 먹지? | 계절·날씨별 저녁 메뉴 추천">
+  <meta name="twitter:description" content="저녁 메뉴 추천이 고민될 때 계절, 체감 날씨, 당기는 맛, 오늘 기분을 골라보세요. 메뉴별 특징을 비교해 지금 어울리는 저녁 메뉴 세 가지와 대표 재료를 추천합니다.">
+  <meta name="twitter:image" content="https://dinnermenuweb.pages.dev/dinner.jpg">
+  <meta name="twitter:image:alt" content="달걀 프라이를 올린 김치볶음밥 저녁 한 끼">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://dinnermenuweb.pages.dev/#website",
+        "url": "https://dinnermenuweb.pages.dev/",
+        "name": "오늘 저녁 뭐 먹지?",
+        "alternateName": "Reddington Dinner Journal",
+        "description": "계절·날씨·당기는 맛·기분을 바탕으로 오늘의 저녁 메뉴 세 가지를 추천합니다.",
+        "inLanguage": "ko-KR"
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "https://dinnermenuweb.pages.dev/#dinner-recommender",
+        "name": "오늘 저녁 뭐 먹지? 메뉴 추천",
+        "url": "https://dinnermenuweb.pages.dev/",
+        "applicationCategory": "FoodAndDrinkApplication",
+        "operatingSystem": "Any",
+        "isAccessibleForFree": true,
+        "inLanguage": "ko-KR",
+        "description": "계절, 체감 날씨, 당기는 맛, 오늘 기분과 메뉴별 특징을 연결해 저녁 메뉴 세 가지를 추천하는 웹 앱.",
+        "image": "https://dinnermenuweb.pages.dev/dinner.jpg"
+      }
+    ]
+  }
+  </script>
+  <title>오늘 저녁 뭐 먹지? | 계절·날씨별 저녁 메뉴 추천</title>
   <link rel="icon" href="favicon.png?v=7" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="content.css">
   <script src="recommendations.js" defer></script>
@@ -40,7 +84,7 @@
   <header class="top"><div class="wrap">
     <nav class="brand-row" aria-label="사이트 메뉴"><a class="brand" href="./" aria-label="Reddington, 오늘 저녁 뭐 먹지? 홈"><span class="brand-mark" aria-hidden="true">R</span><span class="brand-lockup"><span class="brand-name">REDDINGTON</span><span class="brand-descriptor">DINNER JOURNAL</span></span></a><div class="brand-actions"><a class="header-link" href="guide.html">추천 가이드</a><a class="header-link" href="privacy.html">개인정보</a><span class="brand-tagline">고민은 짧게, 저녁은 맛있게</span><button id="openPartner" class="partner-trigger" type="button">제휴 문의</button></div></nav>
     <div class="hero-layout">
-      <div class="hero"><div class="hero-copy"><p class="eyebrow">THE 7PM EDIT</p><h1><span>오늘 저녁,</span><br><em>뭘 먹지?</em></h1><p class="hero-lede">네 번 고르면 오늘의 기분과 날씨에 맞는<br>저녁 후보 세 가지를 골라드릴게요.</p><p class="hero-microcopy"><span class="micro-dot" aria-hidden="true"></span>고민은 짧게, 저녁은 맛있게</p><a class="hero-cta" href="#quiz"><span>메뉴 추천 시작하기</span><span aria-hidden="true">↓</span></a></div><div class="hero-art postcard"><div class="postcard-topline"><span class="postcard-brand">REDDINGTON <i>·</i> DINNER JOURNAL</span><span class="postcard-date">SEOUL <i>·</i> 7 PM</span></div><div class="postcard-photo"><img src="dinner.jpg" alt="달걀 프라이를 올린 김치볶음밥"></div><div class="postcard-caption"><div class="postcard-copy"><p class="postcard-eyebrow">TONIGHT'S PICK <span>NO. 01</span></p><strong>김치볶음밥으로 시작하는 저녁</strong><p class="postcard-note">따뜻하고 든든한 한 끼가 생각나는 밤</p></div><div class="postcard-seal" aria-hidden="true"><span>DINNER</span><b>✳</b><span>POSTCARD</span></div></div><div class="postcard-postmark" aria-hidden="true">REDDINGTON<br>SEOUL · 7PM</div></div></div>
+      <div class="hero"><div class="hero-copy"><p class="eyebrow">THE 7PM EDIT</p><h1><span>오늘 저녁,</span><br><em>뭘 먹지?</em></h1><p class="hero-lede">네 번 고르면 오늘의 기분과 날씨에 맞는<br>저녁 후보 세 가지를 골라드릴게요.</p><p class="hero-microcopy"><span class="micro-dot" aria-hidden="true"></span>고민은 짧게, 저녁은 맛있게</p><a class="hero-cta" href="#quiz"><span>메뉴 추천 시작하기</span><span aria-hidden="true">↓</span></a></div><div class="hero-art postcard"><div class="postcard-topline"><span class="postcard-brand">REDDINGTON <i>·</i> DINNER JOURNAL</span><span class="postcard-date">SEOUL <i>·</i> 7 PM</span></div><div class="postcard-photo"><picture><source type="image/webp" srcset="dinner-480.webp 480w, dinner-800.webp 800w, dinner.webp 1254w" sizes="(max-width: 640px) calc(100vw - 56px), (max-width: 960px) 42vw, 560px"><img src="dinner.jpg" alt="달걀 프라이를 올린 김치볶음밥" width="1254" height="1254" loading="eager" fetchpriority="high" decoding="async"></picture></div><div class="postcard-caption"><div class="postcard-copy"><p class="postcard-eyebrow">TONIGHT'S PICK <span>NO. 01</span></p><strong>김치볶음밥으로 시작하는 저녁</strong><p class="postcard-note">따뜻하고 든든한 한 끼가 생각나는 밤</p></div><div class="postcard-seal" aria-hidden="true"><span>DINNER</span><b>✳</b><span>POSTCARD</span></div></div><div class="postcard-postmark" aria-hidden="true">REDDINGTON<br>SEOUL · 7PM</div></div></div>
     </div>
   </div></header>
   <main class="wrap">

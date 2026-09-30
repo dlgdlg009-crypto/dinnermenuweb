@@ -143,9 +143,9 @@
     $('#reason').textContent = result.reason; $('#moodReason').textContent = result.moodReason;
     $('#cards').innerHTML = result.meals.map((meal,i) => {
       const photoAttrs = meal.photo?.src
-        ? `style="--food-image:url('${meal.photo.src}');--food-size:100% 100%"`
+        ? `style="--food-image:url('${meal.photo.src}');--food-size:cover;--food-position:center"`
         : meal.photo
-        ? `style="--food-image:url('food-atlas-${String(meal.photo.sheet).padStart(2,'0')}.jpg');--food-position:${meal.photo.x}% ${meal.photo.y}%"`
+        ? `style="--food-image:url('food-atlas-${String(meal.photo.sheet).padStart(2,'0')}.webp');--food-position:${meal.photo.x}% ${meal.photo.y}%"`
         : '';
       return `<article class="meal-card" data-id="${meal.id}"><div class="meal-photo" ${photoAttrs}><div class="meal-overlay"><span class="meal-number">추천 0${i+1}${i===0?' · 먼저 추천':''}</span><h3>${escape(meal.name)}</h3><p>${escape(meal.description)}</p><div class="meal-actions"><button class="quiet meal-select" type="button" data-meal="${meal.id}" aria-pressed="false" aria-label="${escape(meal.name)} 선택">이 메뉴로 할래요</button><button class="reaction-button" type="button" data-reaction="${escape(meal.name)}" aria-pressed="false" aria-label="${escape(meal.name)} 좋아요"><span class="reaction-heart" aria-hidden="true">♡</span><span class="reaction-count">0</span></button></div></div></div></article>`;
     }).join('');
