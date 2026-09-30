@@ -58,11 +58,9 @@ body{font-family:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif
 .hero h1>span,.hero h1>em{display:inline-block;transform-origin:12% 70%}
 .hero h1>span{transform:rotate(-2deg) translateX(-.035em)}
 .hero h1>em{transform:rotate(1.6deg) translateX(.2em)}
-.hero-art span{right:auto;bottom:28px;left:27px;max-width:calc(100% - 54px);padding:13px 17px;border:1px solid rgba(255,253,248,.38);border-radius:14px;background:rgba(43,39,35,.94);color:#ffe7b6;font-family:"Space Grotesk","DM Mono",sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.13em;line-height:1.45;text-align:left;transform:rotate(-2deg);box-shadow:0 8px 24px rgba(31,24,20,.28);backdrop-filter:blur(8px)}
-.hero-art span strong{display:inline-block;margin-top:3px;color:#fffdf8;font-family:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:1rem;font-weight:700;letter-spacing:-.035em;line-height:1.5}
 .hero-lede,.description,.choice strong,.choice small,.recommendation-note,.meal-overlay,.comments-intro{font-family:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif}
 .brand-tagline,.meal-number,footer{font-family:"Space Grotesk","DM Mono",sans-serif}
-@media(max-width:640px){.hero-copy>.eyebrow{margin-bottom:22px;font-size:10px}.hero h1>span{transform:rotate(-1.7deg) translateX(-.025em)}.hero h1>em{transform:rotate(1.3deg) translateX(.14em)}.hero-art span{bottom:22px;left:18px;max-width:calc(100% - 36px);padding:11px 13px;font-size:.62rem}.hero-art span strong{font-size:.88rem;line-height:1.45}}
+@media(max-width:640px){.hero-copy>.eyebrow{margin-bottom:22px;font-size:10px}.hero h1>span{transform:rotate(-1.7deg) translateX(-.025em)}.hero h1>em{transform:rotate(1.3deg) translateX(.14em)}}
 
 .meal-actions{display:flex;align-items:stretch;gap:8px}
 .meal-overlay .meal-actions .meal-select{width:auto;min-width:0;min-height:42px;flex:1;padding:9px 12px;font-size:14px}
@@ -94,6 +92,71 @@ body{font-family:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif
   html { scroll-snap-type: none; }
 }
 
+/* Pair the introduction with a compact community panel in a 3:1 desktop layout. */
+.hero-layout{display:grid;grid-template-columns:minmax(0,3fr) minmax(255px,1fr);align-items:center;gap:clamp(22px,3vw,38px)}
+.hero-layout .hero{min-width:0;grid-template-columns:minmax(0,1fr) minmax(190px,240px);gap:clamp(22px,3vw,40px)}
+.comments-aside{min-width:0;max-height:min(76svh,690px);margin:0;padding:22px;overflow:auto;scrollbar-width:thin}
+.comments-aside .comments-summary{display:block;cursor:pointer;list-style:none}
+.comments-aside .comments-summary::-webkit-details-marker{display:none}
+.comments-aside .comments-summary>.eyebrow{display:block;margin:0 0 6px;font-size:10px}
+.comments-aside .comments-toggle-hint{display:none}
+.comments-aside:not([open]){max-height:none}
+.comments-aside:not([open]) .comments-summary>.eyebrow{margin-bottom:4px}
+.comments-aside:not([open]) .comments-toggle-hint{display:block;margin-top:8px;color:#8b422f;font-size:11px;font-weight:700}
+.comments-aside[open] .comments-toggle-hint{display:none}
+.comments-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.comments-aside .comments-heading h2{font-size:clamp(18px,1.7vw,22px);letter-spacing:-.05em}
+.comment-count{flex:0 0 auto;padding:5px 9px;border:1px solid rgba(196,95,69,.24);border-radius:999px;background:#f7e6dc;color:#8b422f;font-size:12px;font-weight:750;white-space:nowrap}
+.comments-aside .comments-intro{margin:4px 0 14px;font-size:12px;line-height:1.55}
+.comments-aside .comment-form{gap:8px;padding:12px;border-radius:13px}
+.comments-aside .comment-label{font-size:12px}
+.comments-aside .comment-form textarea{min-height:68px;padding:9px 10px;font-size:13px}
+.comments-aside .comment-form-footer{display:grid;grid-template-columns:1fr auto;gap:8px}
+.comments-aside .anonymous-check{grid-column:1/-1;font-size:11px}
+.comments-aside .comment-length{font-size:10px}
+.comments-aside .comment-form-footer button{min-height:36px;padding:7px 10px;font-size:12px}
+.comments-aside .comment-status{margin:9px 1px;font-size:11px;line-height:1.45}
+.comments-aside .comment-list{max-height:180px;overflow:auto}
+.comments-aside .comment-item{padding:10px 12px}
+.comments-aside .comment-item-header{font-size:11px}
+.comments-aside .comment-item-header time{font-size:10px}
+.comments-aside .comment-item p{margin-top:5px;font-size:12px;line-height:1.55}
+.comments-policy{margin:10px 0 0;text-align:right;font-size:11px}
+.comments-policy a{color:#8b422f}
+@media(max-width:960px){.hero-layout{grid-template-columns:1fr;gap:0}.hero-layout .hero{grid-template-columns:minmax(0,1fr) minmax(190px,240px)}.comments-aside{max-height:540px;margin:0 0 24px;padding:20px}.comments-aside .comment-list{max-height:150px}}
+@media(max-width:640px){.hero-layout{gap:0}.hero-layout .hero{grid-template-columns:1fr}.comments-aside{margin:0 0 20px;padding:14px 16px}.comments-aside .comments-heading h2{font-size:18px}.comments-aside:not([open]) .comments-summary>.eyebrow{display:none}.comments-aside:not([open]) .comments-summary{display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 10px}.comments-aside:not([open]) .comments-heading{grid-column:1}.comments-aside:not([open]) .comments-toggle-hint{grid-column:1/-1;margin-top:0}.comments-aside .comment-form textarea{min-height:64px}.comments-aside .comment-list{max-height:130px}}
+
+/* Give the dinner photo enough space to read as the hero on wide and small screens. */
+.hero-layout .hero{grid-template-columns:minmax(0,1fr) minmax(320px,42%);gap:clamp(18px,2vw,28px)}
+.hero-layout .hero-art{width:100%;padding:10px;border:1px solid rgba(255,253,248,.88);border-radius:26px;background:rgba(255,253,248,.76);box-shadow:0 18px 44px rgba(67,51,39,.12);transform:rotate(2deg)}
+.hero-layout .hero-art img{width:100%;height:auto;min-height:0;aspect-ratio:1.3;object-fit:cover;border-radius:17px}
+@media(max-width:960px){.hero-layout .hero{grid-template-columns:minmax(0,1fr) minmax(300px,38%)}}
+@media(max-width:640px){.hero-layout .hero{grid-template-columns:minmax(0,1fr);gap:20px}.hero-layout .hero-art{padding:8px;border-radius:22px}.hero-layout .hero-art img{aspect-ratio:1.32;border-radius:15px}}
+
+/* Editorial dinner postcard inspired by a keepsake food photograph. */
+.hero-layout .postcard{position:relative;overflow:visible;padding:16px 16px 18px;border:1px solid rgba(110,83,62,.18);border-radius:24px;background:#fffaf2;box-shadow:0 20px 48px rgba(79,56,38,.15),0 4px 12px rgba(79,56,38,.08);transform:rotate(1.2deg)}
+.hero-layout .postcard span{position:static;inset:auto;display:inline;color:inherit;background:transparent;border:0;border-radius:0;padding:0;font-family:inherit;font-size:inherit;font-weight:inherit;letter-spacing:inherit;line-height:inherit;text-align:inherit;transform:none;box-shadow:none;backdrop-filter:none}
+.postcard-topline{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 12px;padding:0 2px;color:#897668;font-family:"Space Grotesk","DM Mono",sans-serif;font-size:9px;font-weight:700;letter-spacing:.11em;line-height:1.3}
+.postcard-topline i{color:#c45f45;font-style:normal}
+.postcard-brand{white-space:nowrap}
+.postcard-date{white-space:nowrap;color:#a28f80}
+.postcard-photo{position:relative;overflow:hidden;border-radius:14px;background:#eadcc9}
+.postcard-photo::after{position:absolute;inset:0;border:1px solid rgba(255,255,255,.2);border-radius:inherit;content:"";pointer-events:none}
+.hero-layout .postcard .postcard-photo img{display:block;width:100%;height:auto;aspect-ratio:1.18;min-height:0;object-fit:cover;object-position:center 54%;border-radius:14px;filter:saturate(1.04) contrast(1.02)}
+.postcard-caption{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 3px 0}
+.postcard-copy{min-width:0}
+.hero .postcard .postcard-eyebrow{margin:0 0 5px;color:#b75b43;font-family:"Space Grotesk","DM Mono",sans-serif;font-size:9px;font-weight:700;letter-spacing:.13em}
+.postcard-eyebrow span{margin-left:7px;color:#a29182;font-weight:500;letter-spacing:.08em}
+.postcard-copy>strong{display:block;color:#302a26;font-size:clamp(13px,1.15vw,16px);font-weight:800;letter-spacing:-.045em;line-height:1.4}
+.hero .postcard .postcard-note{margin:4px 0 0;color:#85796f;font-size:10px;letter-spacing:-.02em;line-height:1.45}
+.postcard-seal{display:grid;flex:0 0 48px;width:48px;height:48px;box-sizing:border-box;overflow:visible;place-content:center;gap:0;border:1px dashed rgba(255,250,242,.72);border-radius:50%;outline:1px solid rgba(196,95,69,.22);outline-offset:3px;background:#c45f45;color:#fff8ed;text-align:center;transform:rotate(7deg)}
+.hero-layout .postcard .postcard-seal span{display:block;white-space:nowrap;font-family:"Space Grotesk","DM Mono",sans-serif;font-size:4.5px;font-weight:700;letter-spacing:.02em;line-height:1.25}
+.postcard-seal b{font-size:14px;line-height:1.1}
+.postcard-postmark{position:absolute;top:-17px;left:-19px;display:grid;width:84px;height:84px;place-content:center;border:1px solid rgba(255,250,242,.7);border-radius:50%;background:#d78a54;color:#fffaf2;font-family:"Space Grotesk","DM Mono",sans-serif;font-size:8px;font-weight:700;letter-spacing:.1em;line-height:1.65;text-align:center;text-shadow:0 1px 2px rgba(82,48,28,.15);box-shadow:0 5px 16px rgba(84,53,34,.18);transform:rotate(-11deg)}
+.postcard-postmark::before{position:absolute;inset:5px;border:1px dashed rgba(255,250,242,.68);border-radius:50%;content:""}
+@media(max-width:960px){.hero-layout .hero{grid-template-columns:minmax(0,1fr) minmax(320px,42%)}.hero-layout .postcard{max-width:680px;margin:8px auto 18px}.hero-layout .postcard .postcard-photo img{aspect-ratio:1.38}}
+@media(max-width:640px){.hero-layout .hero{grid-template-columns:minmax(0,1fr);gap:20px}.hero-layout .postcard{width:calc(100% - 14px);max-width:none;margin:3px auto 12px;padding:13px 13px 15px;border-radius:21px}.postcard-topline{margin-bottom:9px;font-size:8px}.hero-layout .postcard .postcard-photo img{aspect-ratio:1.34}.postcard-caption{gap:8px;padding-top:12px}.postcard-copy>strong{font-size:14px}.postcard-note{font-size:10px}.postcard-seal{flex-basis:44px;width:44px;height:44px}.hero-layout .postcard .postcard-seal span{font-size:4px;letter-spacing:.01em}.postcard-seal b{font-size:12px}.postcard-postmark{top:-13px;left:-11px;width:70px;height:70px;font-size:7px}}
+
 /* Keep the opening composition compact on tall displays without crowding content. */
 .top{min-height:min(82svh,780px)}
 .top>.wrap{width:min(1180px,calc(100% - 48px))}
@@ -102,3 +165,69 @@ body{font-family:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif
 @media(min-width:641px){#quiz{min-height:min(84svh,780px)}}
 @media(max-width:880px){.top{min-height:auto;align-items:stretch}.top>.wrap{width:calc(100% - 32px)}.hero{padding:26px 0 34px;gap:26px}}
 @media(max-width:640px){.hero{padding:26px 0 30px;gap:20px}.panel{padding:19px 15px}}
+
+/* Balance the postcard and community panel, and keep both postcard seals legible. */
+@media(min-width:961px){
+  .hero-layout{grid-template-columns:minmax(0,2.4fr) minmax(300px,1fr);align-items:center;gap:clamp(24px,2.5vw,34px)}
+  .comments-aside{max-height:none;align-self:center;padding:20px;overflow:visible}
+}
+.postcard-topline{padding-left:70px}
+.postcard-seal{flex-basis:84px;width:84px;height:84px}
+.hero-layout .postcard .postcard-seal span{font-size:7px;letter-spacing:.045em}
+.postcard-seal b{font-size:20px}
+@media(max-width:640px){
+  .postcard-topline{padding-left:52px}
+  .postcard-seal{flex-basis:70px;width:70px;height:70px}
+  .hero-layout .postcard .postcard-seal span{font-size:5.8px;letter-spacing:.035em}
+  .postcard-seal b{font-size:17px}
+}
+
+/* Keep the postcard in the hero and bring community into the recommendation flow. */
+.hero-layout{grid-template-columns:minmax(0,1fr);gap:0}
+.recommendation-community{min-width:0}
+.recommendation-community>.comments-panel{margin-top:24px;max-height:none;overflow:visible}
+.recommendation-community .comments-summary{display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 12px;cursor:pointer;list-style:none}
+.recommendation-community .comments-summary::-webkit-details-marker{display:none}
+.recommendation-community .comments-summary>.eyebrow{grid-column:1;margin:0;font-size:10px}
+.recommendation-community .comments-heading{grid-column:1;grid-row:2;justify-content:flex-start}
+.recommendation-community .comments-heading h2{font-size:clamp(20px,2.3vw,25px)}
+.recommendation-community .comments-toggle-hint{grid-column:2;grid-row:1/3;color:#8b422f;font-size:12px;font-weight:700}
+.recommendation-community .comments-toggle-hint>span{padding-left:4px}
+.recommendation-community .comments-panel:not([open]) .comments-summary>.eyebrow{margin:0}
+.recommendation-community .comments-panel:not([open]) .comments-heading{grid-row:1}
+.recommendation-community .comments-panel[open] .comments-toggle-hint{display:none}
+.recommendation-community .comments-panel .comment-list{max-height:320px}
+@media(max-width:640px){
+  .recommendation-community>.comments-panel{margin-top:18px;padding:20px 16px}
+  .recommendation-community .comments-heading h2{font-size:19px}
+  .recommendation-community .comments-intro{margin-bottom:16px;font-size:13px}
+  .recommendation-community .comments-panel .comment-form textarea{min-height:76px}
+}
+
+/* Subtle sesame and chili-flake scatter, sampled from the selected background concept. */
+body{background-image:url("spice-scatter.svg");background-size:1120px 880px;background-repeat:repeat;background-position:0 0}
+body::before{display:none}
+.hero-layout .postcard .postcard-seal span{font-size:16.5px;letter-spacing:.025em;line-height:1.1}
+.postcard-seal b{font-size:39px;line-height:1}
+@media(max-width:640px){
+  .hero-layout .postcard .postcard-seal span{font-size:12.75px;letter-spacing:.018em;line-height:1.1}
+  .postcard-seal b{font-size:34.5px}
+}
+.hero-layout .postcard-seal{flex-basis:138px;width:138px;height:138px;border-radius:48% 52% 49% 51% / 52% 48% 53% 47%;outline-offset:6px;transform:translate(12px,12px) rotate(-13deg);box-shadow:2px 5px 0 rgba(95,45,30,.14)}
+.hero-layout .postcard-postmark{top:-21px;left:-24px;width:96px;height:96px;border-radius:51% 49% 53% 47% / 48% 52% 47% 53%;transform:rotate(8deg)}
+.postcard-topline{padding-left:82px}
+@media(max-width:640px){
+  .hero-layout .postcard-seal{flex-basis:117px;width:117px;height:117px;transform:translate(10px,10px) rotate(-13deg)}
+  .hero-layout .postcard-postmark{top:-15px;left:-13px;width:78px;height:78px}
+  .postcard-topline{padding-left:60px}
+}
+.hero-layout .postcard-caption{min-height:106px;padding:14px 128px 0 3px}
+.hero-layout .postcard .postcard-seal{position:absolute;z-index:3;right:-18px;bottom:-18px;flex:none;width:138px;height:138px;border:0;outline:0;box-shadow:none;transform:rotate(-13deg)}
+html{overflow-x:clip}
+@media(max-width:640px){
+  .hero-layout .postcard-caption{min-height:90px;padding:12px 112px 0 3px}
+  .hero-layout .postcard .postcard-seal{right:-14px;bottom:-14px;width:117px;height:117px}
+}
+/* Soft gingham weave from the selected center-cell background concept. */
+body{background-image:linear-gradient(90deg,rgba(196,95,69,.055) 50%,transparent 50%),linear-gradient(rgba(196,95,69,.055) 50%,transparent 50%),repeating-linear-gradient(0deg,rgba(255,255,255,.08) 0 1px,transparent 1px 5px),repeating-linear-gradient(90deg,rgba(118,76,45,.02) 0 1px,transparent 1px 5px);background-size:108px 108px,108px 108px,10px 10px,10px 10px;background-position:0 0;background-repeat:repeat}
+
