@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="content.css">
   <script src="recommendations.js" defer></script>
   <script src="app.js" defer></script>
+  <script src="comments.js" defer></script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1N9RBMLHLY"></script>
   <script>
@@ -74,9 +75,20 @@
     <section class="comments-panel" aria-labelledby="commentsTitle">
       <p class="eyebrow">COMMUNITY</p>
       <h2 id="commentsTitle">저녁 메뉴 이야기</h2>
-      <p class="comments-intro">추천 메뉴에 대한 의견이나 오늘의 저녁 이야기를 나눠보세요. 댓글은 공개될 수 있으며 개인정보나 민감한 내용은 적지 말아 주세요. 부적절한 댓글은 운영자가 숨기거나 삭제할 수 있습니다. <a href="privacy.html">댓글과 개인정보 안내</a></p>
-      <div id="disqus_thread"></div>
-      <noscript>댓글을 보려면 JavaScript를 켜주세요. 댓글 기능은 <a href="https://disqus.com/?ref_noscript">Disqus</a>에서 제공됩니다.</noscript>
+      <p class="comments-intro">이름이나 이메일 없이 오늘의 메뉴에 대한 반응을 남겨보세요. 댓글은 공개되며, 개인정보나 민감한 내용은 적지 말아 주세요. <a href="privacy.html">댓글과 개인정보 안내</a></p>
+      <form id="commentForm" class="comment-form">
+        <label class="comment-label" for="commentText">오늘의 한마디</label>
+        <textarea id="commentText" name="comment" maxlength="500" rows="3" placeholder="오늘 저녁 메뉴에 대한 생각을 남겨주세요." required></textarea>
+        <div class="comment-form-footer">
+          <label class="anonymous-check"><input id="anonymousComment" type="checkbox" required checked> 비회원으로 작성합니다</label>
+          <span id="commentLength" class="comment-length">0 / 500</span>
+          <button class="primary" type="submit">댓글 등록</button>
+        </div>
+        <label class="comment-trap" aria-hidden="true">웹사이트 <input name="website" tabindex="-1" autocomplete="off"></label>
+      </form>
+      <p id="commentStatus" class="comment-status" role="status" aria-live="polite">댓글을 불러오는 중이에요.</p>
+      <ol id="commentList" class="comment-list" aria-label="최근 댓글"></ol>
+      <noscript>댓글을 보려면 JavaScript를 켜주세요.</noscript>
     </section>
     <footer><span class="footer-brand">오늘 저녁 뭐 먹지?</span><span>·</span> 나를 위한 맛있는 결정<nav aria-label="하단 메뉴"><a href="guide.html">추천 가이드</a><a href="menu-library.html">메뉴 98종</a><a href="privacy.html">개인정보 처리방침</a><button type="button" class="footer-partner" onclick="document.getElementById('openPartner').click()">제휴 문의</button></nav></footer>
   </main>
@@ -95,18 +107,6 @@
       </form>
     </section>
   </div>
-  <script>
-    var disqus_config = function () {
-      this.page.url = 'https://dinnermenuweb.pages.dev/';
-      this.page.identifier = 'dinnermenuweb';
-    };
-    (function () {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://raymondd.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', +new Date());
-      (d.head || d.body).appendChild(s);
-    })();
-  </script>
   <div id="live" class="sr-only" role="status" aria-live="polite"></div>
   <noscript>메뉴를 추천받으려면 브라우저에서 JavaScript를 켜주세요.</noscript>
 </body>
