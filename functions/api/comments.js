@@ -31,10 +31,11 @@ export async function onRequestGet(context) {
   const db = database(context);
   if (!db) return json({ error: 'Comment storage is not configured.' }, 503);
   try {
-    const result = await db.prepare(
-      'SELECT id, body, created_at FROM dinner_comments ORDER BY created_at DESC LIMIT 50'
-    ).all();
-    return json({ comments: (result.results || []).map(format) });
+    const [result, total] = await Promise.all([
+      db.prepare('SELECT id, body, created_at FROM dinner_comments ORDER BY created_at DESC LIMIT 50').all(),
+      db.prepare('SELECT COUNT(*) AS count FROM dinner_comments').first()
+    ]);
+    return json({ comments: (result.results || []).map(format), totalComments: Number(total?.count) || 0 });
   } catch {
     return json({ error: 'Comment storage is not ready.' }, 503);
   }
@@ -82,3 +83,4 @@ export async function onRequestPost(context) {
     return json({ error: '댓글 저장소가 준비되지 않았어요. 잠시 후 다시 시도해 주세요.' }, 503);
   }
 }
+
